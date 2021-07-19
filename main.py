@@ -1,7 +1,7 @@
 import backtrader as bt
 
 from data import CustomCSVData
-from strategy import PrintClose
+from strategy import PrintClose, MAcrossover
 
 
 # Instantiate Cerebro engine
@@ -25,7 +25,16 @@ data = CustomCSVData(
 cerebro.adddata(data)
 
 # Add strategy to Cerebro
-cerebro.addstrategy(PrintClose)
+cerebro.addstrategy(MAcrossover)
 
-# Run Cerebro Engine
-cerebro.run()
+if __name__ == "__main__":
+    # Run Cerebro Engine
+    start_portfolio_value = cerebro.broker.getvalue()
+
+    cerebro.run()
+
+    end_portfolio_value = cerebro.broker.getvalue()
+    pnl = end_portfolio_value - start_portfolio_value
+    print(f"Starting Portfolio Value: {start_portfolio_value:2f}")
+    print(f"Final Portfolio Value: {end_portfolio_value:2f}")
+    print(f"PnL: {pnl:.2f}")
